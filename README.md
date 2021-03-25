@@ -1,4 +1,13 @@
-# Getting Started with Create React App
+# React Tic-Tac-Toe
+
+This project was built alongside the [initial Reactjs tutorial](https://reactjs.org/tutorial/tutorial.html).
+
+The aim was to learn the Typescript syntax alongside the basic principles of React.
+
+
+
+
+# Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
