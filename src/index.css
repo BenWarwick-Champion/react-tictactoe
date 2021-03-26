@@ -7,6 +7,10 @@ ol, ul {
 padding-left: 30px;
 }
 
+button {
+  width: 180px;
+}
+
 .board-row:after {
 clear: both;
 content: "";

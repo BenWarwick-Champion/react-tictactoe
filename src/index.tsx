@@ -58,7 +58,10 @@ class Board extends React.Component<BoardProps, {}> {
 
 
 interface GameState {
-  history: Array<{squares: Array<string | null>}>,
+  history: Array<{
+    squares: Array<string | null>,
+    clickedSquare: number | null,
+  }>,
   xIsNext: boolean,
   stepNumber: number,
 }
@@ -66,9 +69,10 @@ interface GameState {
 class Game extends React.Component {
 
   state: GameState = {
-    history: [
-      {squares: Array(9).fill(null)},
-    ],
+    history: [{
+      squares: Array(9).fill(null),
+      clickedSquare: null,
+    },],
     xIsNext: true,
     stepNumber: 0,
   }
@@ -82,7 +86,7 @@ class Game extends React.Component {
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
-      history: [...history, {squares: squares}],
+      history: [...history, {squares: squares, clickedSquare: i}],
       xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
     });
@@ -101,9 +105,12 @@ class Game extends React.Component {
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
-      let desc: string | JSX.Element = move ?
-        `Go to move #${move}` :
-        `Go to game start`;
+      const clickedSquare = step.clickedSquare;
+      console.log(move, clickedSquare);
+      let desc: string | JSX.Element = move && clickedSquare ?
+        `Move #${move} - (${Math.floor(clickedSquare / 3)}, ${clickedSquare % 3})` :
+        `Game start`;
+
       // Bold the current move
       desc = history.indexOf(current) === move ? <strong>{desc}</strong> : desc;
 
@@ -117,6 +124,8 @@ class Game extends React.Component {
     let status;
     if (winner) {
       status = `Winner: ${winner}`;
+    } else if (current.squares.every((square) => !!square)) {
+      status = `The game is a draw!`;
     } else {
       status = `Next Player: ${this.state.xIsNext ? 'X':'O'}`;
     };
