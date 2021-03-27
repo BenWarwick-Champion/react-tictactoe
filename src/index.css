@@ -44,6 +44,10 @@ outline: none;
 background: #ddd;
 }
 
+.red {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
 .game {
 display: flex;
 flex-direction: row;

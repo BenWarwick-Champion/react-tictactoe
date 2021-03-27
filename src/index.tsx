@@ -6,11 +6,14 @@ import './index.css';
 interface SquareProps {
   squareValue: string | null,
   onClick(): void,
+  isWinning: boolean,
 }
 
 function Square(props: SquareProps) {
   return (
-      <button className="square" onClick={props.onClick}>
+      <button 
+        className={props.isWinning ? "square red" : "square"} 
+        onClick={props.onClick}>
           {props.squareValue}
       </button>
   );
@@ -20,15 +23,17 @@ function Square(props: SquareProps) {
 interface BoardProps {
   squares: Array<string | null>,
   onClick(i: number): void,
+  winningLine: Array<number> | null,
 }
 
 class Board extends React.Component<BoardProps, {}> {
-  renderSquare(i: number) {
+  renderSquare(i: number, winningSquare: boolean) {
     return (
       <Square
         key={i}
         squareValue={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        isWinning={winningSquare}
       />
     );
   }
@@ -40,7 +45,14 @@ class Board extends React.Component<BoardProps, {}> {
       let squareList = [];
       // Inner loop to create squares
       for (let c=0; c<boardLength; c++) {
-        squareList.push(this.renderSquare((r * boardLength) + c));
+        const squareIndex = (r * boardLength) + c;
+        let isWinning;
+        if (this.props.winningLine) {
+          isWinning = this.props.winningLine.includes(squareIndex);
+        } else {
+          isWinning = false;
+        }
+        squareList.push(this.renderSquare(squareIndex, isWinning));
       }
       board.push(<div className="board-row" key={r}>{squareList}</div>);
     }
@@ -102,7 +114,7 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const winCondition = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
       const clickedSquare = step.clickedSquare;
@@ -122,8 +134,8 @@ class Game extends React.Component {
     })
 
     let status;
-    if (winner) {
-      status = `Winner: ${winner}`;
+    if (winCondition) {
+      status = `Winner: ${winCondition.winner}`;
     } else if (current.squares.every((square) => !!square)) {
       status = `The game is a draw!`;
     } else {
@@ -136,6 +148,7 @@ class Game extends React.Component {
         <Board 
           squares={current.squares}
           onClick={(i) => this.handleClick(i)}
+          winningLine={winCondition ? winCondition.winningLine : null}
         />
         </div>
         <div className="game-info">
@@ -168,7 +181,7 @@ function calculateWinner(squares: Array<string | null>) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return {winner: squares[a], winningLine: lines[i]};
     }
   }
   return null;
