@@ -107,7 +107,7 @@ class Game extends React.Component {
     const moves = history.map((step, move) => {
       const clickedSquare = step.clickedSquare;
       console.log(move, clickedSquare);
-      let desc: string | JSX.Element = move && clickedSquare ?
+      let desc: string | JSX.Element = move && (clickedSquare !== null) ?
         `Move #${move} - (${Math.floor(clickedSquare / 3)}, ${clickedSquare % 3})` :
         `Game start`;
 
