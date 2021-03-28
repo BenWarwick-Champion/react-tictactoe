@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+import { TickingClock } from './TickingClock';
 
 interface SquareProps {
   squareValue: string | null,
@@ -143,18 +144,21 @@ class Game extends React.Component {
     };
     
     return (
-    <div className="game">
-        <div className="game-board">
-        <Board 
-          squares={current.squares}
-          onClick={(i) => this.handleClick(i)}
-          winningLine={winCondition ? winCondition.winningLine : null}
-        />
-        </div>
-        <div className="game-info">
-        <div>{ status }</div>
-        <ol>{ moves }</ol>
-        </div>
+    <div className="wrapper">
+      <div className="game">
+          <div className="game-board">
+          <Board 
+            squares={current.squares}
+            onClick={(i) => this.handleClick(i)}
+            winningLine={winCondition ? winCondition.winningLine : null}
+          />
+          </div>
+          <div className="game-info">
+          <div>{ status }</div>
+          <ol>{ moves }</ol>
+          </div>
+      </div>
+      <TickingClock />
     </div>
     );
   }

@@ -11,6 +11,12 @@ button {
   width: 180px;
 }
 
+.wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 2rem;
+}
+
 .board-row:after {
 clear: both;
 content: "";
