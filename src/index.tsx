@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Counter } from './Counter';
 import './index.css';
 
 import { TickingClock } from './TickingClock';
@@ -158,7 +159,10 @@ class Game extends React.Component {
           <ol>{ moves }</ol>
           </div>
       </div>
-      <TickingClock />
+      <div>
+        <TickingClock />
+        <Counter />
+      </div>
     </div>
     );
   }
